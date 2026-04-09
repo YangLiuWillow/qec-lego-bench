@@ -33,6 +33,16 @@ except BaseException as e:
     # print(e)
     pass
 
+try:
+    from mwpf import SinterParallelMWPFDecoder, SinterParallelHUFDecoder, SinterParallelSingleHairDecoder  # type: ignore
+
+    decoder_cli("ParMWPF", "par_mwpf")(SinterParallelMWPFDecoder)
+    decoder_cli("ParHUF", "par_huf")(SinterParallelHUFDecoder)
+    decoder_cli("ParMWPF_SH", "par_mwpfsh")(SinterParallelSingleHairDecoder)
+except BaseException as e:
+    # print(e)
+    pass
+
 
 try:
     from mwpf_rational import (  # type: ignore
