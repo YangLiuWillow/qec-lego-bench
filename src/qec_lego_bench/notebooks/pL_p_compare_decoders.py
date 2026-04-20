@@ -40,6 +40,7 @@ def notebook_pL_p_compare_decoders(
     max_adaptive_min_shots_cpu_hours: float | None = None,
     slurm_maximum_jobs: int | None = None,
     slurm_cores_per_node: int | None = None,
+    slurm_processes_per_node: int | None = None,
     slurm_mem_per_job: int | None = None,
     slurm_extra: dict | None = None,
     local_maximum_jobs: int | None = None,
@@ -104,6 +105,8 @@ def notebook_pL_p_compare_decoders(
         parameters["slurm_maximum_jobs"] = slurm_maximum_jobs
     if slurm_cores_per_node is not None:
         parameters["slurm_cores_per_node"] = slurm_cores_per_node
+    if slurm_processes_per_node is not None:
+        parameters["slurm_processes_per_node"] = slurm_processes_per_node
     if slurm_mem_per_job is not None:
         parameters["slurm_mem_per_job"] = slurm_mem_per_job
     if slurm_extra is not None:
