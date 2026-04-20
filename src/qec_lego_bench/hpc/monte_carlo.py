@@ -30,6 +30,7 @@ import math
 import sinter
 from qec_lego_bench.stats import Stats
 import json
+import numpy as np
 import portalocker
 import os
 from .job_store import JobParameters
@@ -37,6 +38,15 @@ from .panic_store import PanicStore, JobPanic
 import traceback
 import multiprocessing
 import gc
+
+
+class _NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        return super().default(obj)
 
 
 def hex_hash(value: Any) -> str:
@@ -110,7 +120,7 @@ class LogicalErrorResult:  # MonteCarloResult
     @staticmethod
     def from_stats(stats: Stats) -> "LogicalErrorResult":
         return LogicalErrorResult(  # type: ignore
-            errors=stats.errors, discards=stats.discards, panic_cases=stats.panic_cases
+            errors=int(stats.errors), discards=int(stats.discards), panic_cases=stats.panic_cases
         )
 
 
@@ -668,5 +678,5 @@ class MonteCarloJobExecutor:
                 entry["duration"] = job.duration
                 entry["min_time"] = job.min_time
                 entry["finished_tasks"] = job.finished_tasks
-            json.dump(persist, f, indent=2)
+            json.dump(persist, f, indent=2, cls=_NumpyEncoder)
             f.truncate()
