@@ -294,6 +294,7 @@ class SlurmClientConnector:
     # (slurm_maximum_jobs // slurm_cores_per_node) should not exceed 200 (Yale HPC limit)
     slurm_maximum_jobs: int = 200
     slurm_cores_per_node: int = 10
+    slurm_processes_per_node: int | None = None  # dask workers per node; defaults to slurm_cores_per_node
     slurm_mem_per_job: int = 4  # GB
     slurm_extra: dict[str, str] = field(default_factory=DefaultSlurmExtra.scavenge)
     local_maximum_jobs: int | None = None
@@ -307,6 +308,7 @@ class SlurmClientConnector:
             from dask_jobqueue import SLURMCluster
             from dask.distributed import Client
 
+            processes_per_node = self.slurm_processes_per_node or self.slurm_cores_per_node
             n_workers = self.slurm_maximum_jobs // self.slurm_cores_per_node
             assert (
                 n_workers <= 200
@@ -322,7 +324,7 @@ class SlurmClientConnector:
                 del slurm_extra["job_extra_directives"]
             cluster = SLURMCluster(
                 cores=self.slurm_cores_per_node,
-                processes=self.slurm_cores_per_node,
+                processes=processes_per_node,
                 memory=f"{self.slurm_mem_per_job * self.slurm_cores_per_node} GB",
                 job_extra_directives=job_extra_directives,
                 **slurm_extra,
