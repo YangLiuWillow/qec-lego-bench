@@ -272,8 +272,8 @@ class PlPCompareDecodersPlotter:
                     x_vec.append(p)
                     stats = Stats(
                         stats=sinter.AnonTaskStats(
-                            shots=job.shots,
-                            errors=job.result.results[decoder].errors,  # type: ignore
+                            shots=int(job.shots),
+                            errors=int(job.result.results[decoder].errors),  # type: ignore
                         ),
                     )
                     y_vec.append(stats.failure_rate_value)
