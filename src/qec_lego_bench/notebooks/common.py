@@ -54,7 +54,7 @@ class MultiDecoderLogicalErrorRates:  # MonteCarloResult
         return Stats(
             stats=sinter.AnonTaskStats(
                 shots=job.shots,
-                errors=self.errors,
+                errors=int(self.errors),
                 seconds=job.duration,
             ),
         )
