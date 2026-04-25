@@ -34,6 +34,11 @@ def notebook_speed_scaling(
     min_time: float | None = None,
     local_maximum_jobs: int | None = None,
     repeats: int | None = None,
+    slurm_maximum_jobs: int | None = None,
+    slurm_cores_per_node: int | None = None,
+    slurm_processes_per_node: int | None = None,
+    slurm_mem_per_job: int | None = None,
+    slurm_extra: dict | None = None,
 ):
     """
     Generate and run a notebook that tunes the decoders for a given code, noise.
@@ -78,6 +83,16 @@ def notebook_speed_scaling(
         parameters["local_maximum_jobs"] = local_maximum_jobs
     if repeats is not None:
         parameters["repeats"] = repeats
+    if slurm_maximum_jobs is not None:
+        parameters["slurm_maximum_jobs"] = slurm_maximum_jobs
+    if slurm_cores_per_node is not None:
+        parameters["slurm_cores_per_node"] = slurm_cores_per_node
+    if slurm_processes_per_node is not None:
+        parameters["slurm_processes_per_node"] = slurm_processes_per_node
+    if slurm_mem_per_job is not None:
+        parameters["slurm_mem_per_job"] = slurm_mem_per_job
+    if slurm_extra is not None:
+        parameters["slurm_extra"] = slurm_extra
 
     papermill_execute_notebook(
         speed_scaling_template,
